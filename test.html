@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextlify</title>
+    <link rel="icon" href="./imgs/photo_2025-10-05_12.35.13-removebg-preview (1).png">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0d12;
+            color: #e0e0e0;
+            font-family: 'Orbitron', 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #10131a;
+            border: 2px solid #1e2a38;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #00bfff;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #9ed2ff;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #1e2a38;
+            border-radius: 5px;
+            background: #0b0d12;
+            color: #e0e0e0;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #0a84ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        button:hover {
+            background: #00bfff;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0b0d12;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #chart {
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,700");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-top: 100px;
+            background: radial-gradient(ellipse at bottom, #000000 10%, #242424 100%);
+            color: #ffffff;
+            position: relative;
+            overflow-x: hidden;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        /* Stars styles */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .star {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, transparent 60%);
+            animation: twinkle 2s linear infinite, drift 60s ease-in-out infinite;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4)) blur(0.3px);
+            width: 3px;
+            height: 3px;
+        }
+
+        .star:nth-child(7n+1) {
+            width: 3px;
+            height: 3px;
+            opacity: 0.7;
+            animation-duration: 2s, 60s;
+            filter: blur(0.7px) drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+        }
+
+        .star:nth-child(7n+2) {
+            width: 3px;
+            height: 3px;
+            opacity: 0.65;
+            animation-duration: 2.4s, 65s;
+            filter: blur(0.5px) drop-shadow(0 0 3px rgba(200, 200, 255, 0.25));
+        }
+
+        .star:nth-child(7n+3) {
+            width: 4px;
+            height: 4px;
+            opacity: 0.6;
+            animation-duration: 2.2s, 70s;
+            filter: drop-shadow(0 0 4px rgba(255, 245, 200, 0.3));
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.85;
+                transform: scale(1) rotate(45deg);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: scale(0.9) rotate(45deg);
+            }
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateX(0) rotate(45deg);
+            }
+
+            50% {
+                transform: translateX(-15px) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(0) rotate(45deg);
+            }
+        }
+
+        /* Header styles */
+        .hdr {
+            background-color: rgb(16, 20, 53);
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .hdr-img {
+            width: 200px;
+            height: 100px;
+        }
+
+        .hdr-link-sec {
+            display: flex;
+            gap: 40px;
+            font-size: 24px;
+        }
+
+        .hdr-link-sec a {
+            text-decoration: none;
+            color: white;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+
+        .hdr-link-sec a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 3px;
+            background-color: rgb(255, 255, 255);
+            transition: width 0.6s ease-in-out;
+            transform: translateX(-50%);
+        }
+
+        .hdr-link-sec a:hover::after {
+            width: 100%;
+        }
+
+        .hdr-btn {
+            width: 160px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            background-color: rgb(118, 77, 245);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hdr-btn .text-container {
+            display: inline-block;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .hdr-btn .original-text {
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
+        }
+
+        .hdr-btn::after {
+            content: "Log in";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            transition: transform 0.3s ease;
+        }
+
+        .hdr-btn:hover {
+            background-color: rgb(150, 100, 255);
+        }
+
+        .hdr-btn:hover .original-text {
+            transform: translate(-50%, -250%);
+        }
+
+        .hdr-btn:hover::after {
+            transform: translate(-50%, -170%);
+        }
+
+        .ftr {
+            display: flex;
+            justify-content: space-between;
+            padding-left: 300px;
+            padding-right: 300px;
+            align-items: center;
+            gap: 50px;
+            height: 300px;
+            width: auto;
+            border: 1px solid white;
+            border-bottom: none;
+            z-index: 10;
+            background-color: black;
+            color: white;
+            margin-top: 200px;
+        }
+
+        .ftr-button {
+            width: 150px;
+            height: 50px;
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ftr-button:hover {
+            background-color: #090751;
+        }
+
+        .ftr-sec1 {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ftr-intp {
+            width: 700px;
+            height: 100px;
+            border-bottom-left-radius: 20px;
+            border-top-left-radius: 20px;
+            display: flex;
+            border: 1px solid white;
+            background-color: transparent;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        .ftr-btn1 {
+            width: 100px;
+            height: 100px;
+            border-bottom-right-radius: 20px;
+            border-top-right-radius: 20px;
+            background-color: rgb(118, 77, 245);
+            border: 1px solid white;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ftr-btn1:hover {
+            background-color: rgb(150, 100, 255);
+        }
+
+        .send-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ftrr {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .ftr2-sec {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            padding: 20px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="stars"></div>
+    <header class="hdr">
+        <a href="./main.html"><img src="./imgs/photo_2025-10-05_12.35.13-removebg-preview.png" alt=""
+                class="hdr-img"></a>
+        <section class="hdr-link-sec">
+            <a href="./main.html">Home</a>
+            <a href="./Exoplanets.html">Exoplanets</a>
+            <a href="./test.html">AI</a>
+        </section>
+        <a href="./login.html">
+            <button class="hdr-btn">
+                <span class="text-container">
+                    <span class="original-text">Log in</span>
+                </span>
+            </button>
+        </a>
+    </header>
+    <div class="container">
+        <h1>🚀 NASA Exoplanet AI Predictor</h1>
+        <p style="text-align: center; color: #9ed2ff;">Enter parameters to classify exoplanet candidate</p>
+
+        <!-- Полная форма с ВСЕМИ 13 фичами (NUM_FEATURES) — без дефолтных значений -->
+        <form id="predictForm">
+            <label for="koi_period">koi_period (days):</label>
+            <input type="number" id="koi_period" step="0.01" required>
+
+            <label for="koi_duration">koi_duration (hours):</label>
+            <input type="number" id="koi_duration" step="0.01" required>
+
+            <label for="koi_depth">koi_depth (ppm):</label>
+            <input type="number" id="koi_depth" step="0.01" required>
+
+            <label for="koi_prad">koi_prad (Earth radii):</label>
+            <input type="number" id="koi_prad" step="0.01" required>
+
+            <label for="koi_snr">koi_snr (signal-to-noise):</label>
+            <input type="number" id="koi_snr" step="0.01" required>
+
+            <label for="koi_impact">koi_impact (parameter):</label>
+            <input type="number" id="koi_impact" step="0.01" required>
+
+            <label for="koi_teq">koi_teq (K):</label>
+            <input type="number" id="koi_teq" step="0.01" required>
+
+            <label for="koi_steff">koi_steff (K):</label>
+            <input type="number" id="koi_steff" step="0.01" required>
+
+            <label for="koi_slogg">koi_slogg (log g):</label>
+            <input type="number" id="koi_slogg" step="0.01" required>
+
+            <label for="koi_smet">koi_smet ([Fe/H]):</label>
+            <input type="number" id="koi_smet" step="0.01" required>
+
+            <label for="koi_kepmag">koi_kepmag (magnitude):</label>
+            <input type="number" id="koi_kepmag" step="0.01" required>
+
+            <label for="koi_count"># of transits:</label>
+            <input type="number" id="koi_count" step="1" required>
+
+            <label for="koi_ror">koi_ror (Rp/Rs):</label>
+            <input type="number" id="koi_ror" step="0.01" required>
+
+            <button type="submit">🚀 Predict Exoplanet Type</button>
+        </form>
+
+        <div id="result"></div>
+        <div id="chart"></div>
+    </div>
+    <footer class="ftrr">
+        <footer class="ftr">
+            <section class="ftr-sec1">
+                <a href="##"><button class="ftr-button">Nextlify</button></a>
+                <a href="##"><button class="ftr-button">Contacts</button></a>
+                <a href="##"><button class="ftr-button">About us</button></a>
+            </section>
+            <div class="send-message">
+                <input type="text" class="ftr-intp" placeholder="Send your ideas">
+                <button class="ftr-btn1">SEND</button>
+            </div>
+        </footer>
+        <section class="ftr2-sec">© 2025 NEXTIFLY All rights reserved</section>
+    </footer>
+
+    <script>
+        // ← ВСТАВЬ ТВОЙ НОВЫЙ NGROK URL ЗДЕСЬ (с /predict в конце)! 
+        // Для локального сервера[](http://127.0.0.1:5501) ничего не меняй — код уже работает локально.
+        // Просто запусти Colab с ngrok и вставь URL.
+        const API_URL = 'https://unsplayed-rosaria-flavoressly.ngrok-free.dev///predict';  // Пример: https://abc123.ngrok-free.dev/predict
+        const CLASS_ORDER = ['CONFIRMED', 'CANDIDATE', 'FALSE POSITIVE'];  // Из модели
+
+        document.getElementById('predictForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const params = Object.fromEntries(formData.entries());
+            // Парсим все в float (с проверкой на NaN)
+            const fullParams = {
+                koi_period: parseFloat(params.koi_period) || 0,
+                koi_duration: parseFloat(params.koi_duration) || 0,
+                koi_depth: parseFloat(params.koi_depth) || 0,
+                koi_prad: parseFloat(params.koi_prad) || 0,
+                koi_snr: parseFloat(params.koi_snr) || 0,
+                koi_impact: parseFloat(params.koi_impact) || 0,
+                koi_teq: parseFloat(params.koi_teq) || 0,
+                koi_steff: parseFloat(params.koi_steff) || 0,
+                koi_slogg: parseFloat(params.koi_slogg) || 0,
+                koi_smet: parseFloat(params.koi_smet) || 0,
+                koi_kepmag: parseFloat(params.koi_kepmag) || 0,
+                koi_count: parseFloat(params.koi_count) || 0,
+                koi_ror: parseFloat(params.koi_ror) || 0
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ params: fullParams })
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                // Результат
+                const confidence = data[`prob_${data.prediction.replace(' ', '_')}`] * 100;
+                const interpretation = confidence >= 85 ? '🪐 High probability — likely a true exoplanet.' :
+                    confidence >= 60 ? '🌗 Medium probability — further observations recommended.' :
+                        '⚪️ Low probability — likely a false signal or noise.';
+
+                document.getElementById('result').innerHTML = `
+                    <h3 style="color: #00bfff;">🔹 Prediction: <span style="color: #9ed2ff;">${data.prediction}</span></h3>
+                    <p style="font-size: 16px;">🧠 Confidence: <b style="color: #00ffcc;">${confidence.toFixed(2)}%</b></p>
+                    <p style="font-size: 15px;">${interpretation}</p>
+                `;
+                document.getElementById('result').style.display = 'block';
+
+                // График (Plotly, NASA-стиль)
+                const probs = CLASS_ORDER.map(cls => data[`prob_${cls.replace(' ', '_')}`] * 100);
+                const colors = ['#00bfff', '#0affaa', '#ffcc00'];
+                const trace = {
+                    x: probs,
+                    y: CLASS_ORDER,
+                    type: 'bar',
+                    orientation: 'h',
+                    marker: { color: colors },
+                    text: probs.map(p => `${p.toFixed(1)}%`),
+                    textposition: 'outside'
+                };
+                const layout = {
+                    title: { text: `<b>Prediction Confidence: ${confidence.toFixed(1)}%</b>`, font: { color: '#9ed2ff', size: 22 } },
+                    plot_bgcolor: '#0b0d12',
+                    paper_bgcolor: '#0b0d12',
+                    font: { color: '#e0e0e0' },
+                    xaxis: { title: 'Probability (%)', color: '#9ed2ff' },
+                    yaxis: { title: 'Class', color: '#9ed2ff' },
+                    height: 400,
+                    annotations: [{ text: '🪐 NASA Exoplanet Explorer AI', x: 0.5, y: -0.2, showarrow: false, font: { color: '#6fc9ff' } }]
+                };
+                Plotly.newPlot('chart', [trace], layout);
+
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                document.getElementById('result').style.display = 'block';
+            }
+        });
+        const starsContainer = document.getElementById('stars');
+        const starCount = 300;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 40}s`;
+            starsContainer.appendChild(star);
+        }
+
+        // Text animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+    </script>
+</body>
+
+</html>
