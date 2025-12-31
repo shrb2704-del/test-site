@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Новогодний привет — Манижа</title>
+    <link rel="stylesheet" href="./styles/new-year.css" />
+  </head>
+  <body>
+    <main>
+      <div class="page">
+        <section class="hero">
+          <div>
+            <div class="badge">С Новым годом, <span data-name></span>!</div>
+            <h1 class="title">Поймай ладонью маленькую магию</h1>
+            <p class="subtitle">
+              Ладонь — чтобы собрать ёлку. Кулак — чтобы отпустить. Камера только для жестов, видео не
+              сохраняется.
+            </p>
+            <div class="cta-row">
+              <button class="btn" data-start-camera>Включить камеру</button>
+              <div class="helper" data-helper>Видео не сохраняется</div>
+            </div>
+            <div class="helper">
+              <span aria-hidden="true">✨</span>
+              Фраза дня: «Мдэ, возможно когда-нибудь я подумаю и возможно да»
+              <button class="btn secondary" style="padding: 0.5rem 0.75rem;" data-copy-phrase>Скопировать</button>
+            </div>
+          </div>
+          <div class="glass tree-card floating-dots">
+            <div class="scene" data-tree>
+              <div class="snow"></div>
+              <div class="camera-preview hidden" data-preview>
+                <video autoplay playsinline muted data-video></video>
+              </div>
+            </div>
+            <div class="panel status-row">
+              <div class="status-chip" data-camera-status>Камера неактивна</div>
+              <div class="helper tiny" data-gesture-message>Покажи ладонь — соберу. Сожми кулак — отпущу.</div>
+            </div>
+            <div class="panel">
+              <div class="section-title">Fallback, если камера не включилась</div>
+              <div class="fallback-buttons">
+                <button class="btn secondary" data-assemble>Собрать ёлку</button>
+                <button class="btn secondary" data-scatter>Разобрать ёлку</button>
+              </div>
+              <p class="hint">Можно управлять жестами или кнопками — магия доступна обоими способами.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass panel" style="margin-top: 1.2rem;">
+          <div class="status-row">
+            <div>
+              <div class="section-title">Готово?</div>
+              <p class="note" style="margin: 0.2rem 0 0;">Собери ёлку — откроется путь к подсказкам.</p>
+            </div>
+            <a href="./quest.html" class="btn secondary hidden" data-next>Дальше</a>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./scripts/welcome.js"></script>
+  </body>
+</html>
