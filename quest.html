@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Квест для Манижи</title>
+    <link rel="stylesheet" href="./styles/new-year.css" />
+  </head>
+  <body>
+    <main>
+      <div class="page">
+        <header class="status-row" style="margin-bottom: 1rem;">
+          <div>
+            <div class="badge">Теплый мини-квест</div>
+            <h1 class="title" style="margin: 0.3rem 0;">По следам подсказок</h1>
+            <p class="subtitle" style="margin: 0;">Немного игры, немного юмора, и в финале — стих.</p>
+          </div>
+          <a class="btn secondary" href="./index.html">← К ёлке</a>
+        </header>
+
+        <div class="glass panel">
+          <div class="status-row" style="align-items: flex-start;">
+            <div>
+              <div class="section-title">
+                Прогресс <span data-progress-label>0/3</span>
+              </div>
+              <p class="note" data-message>Готова к маленькому приключению?</p>
+            </div>
+            <button class="btn secondary" data-reset>Начать заново</button>
+          </div>
+          <div class="progress" style="margin: 0.6rem 0 1rem;">
+            <div class="progress-bar" data-progress-bar style="width: 0%;"></div>
+          </div>
+
+          <div class="steps">
+            <div class="step-card">
+              <p class="section-title" data-step-title></p>
+              <h3 style="margin: 0.3rem 0 0.6rem;" data-step-question></h3>
+              <div class="options" data-step-options></div>
+              <div class="input-row hidden" data-input-row>
+                <input type="text" placeholder="Впиши ответ" data-input />
+                <button class="btn secondary" data-submit-input data-step-control>Ответить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="glass panel hidden" data-poem-section style="margin-top: 1rem;">
+          <div class="section-title">Финальный стих</div>
+          <div class="poem-card" data-poem></div>
+          <div class="poem-actions">
+            <button class="btn" data-copy-poem>Сохранить</button>
+            <button class="btn secondary" data-reset>Пройти заново</button>
+          </div>
+          <p class="footer-note">
+            <span aria-hidden="true">🌌</span>
+            Линии появляются мягко — это не запись, это живая подсветка.
+          </p>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./components/quest.js"></script>
+  </body>
+</html>
